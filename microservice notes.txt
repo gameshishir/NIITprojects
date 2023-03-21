@@ -1,0 +1,146 @@
+
+1st step: create both the application in your local meachine and ensure they are working
+if every app is working then add docker file in each application
+/usr/lib  ----> /usr/src and add jar files   ---> source and target to be updated and entry point has to be updated
+create a new maven application with quick-start arch type
+you need to open the folder from explorer window and go into your project folder
+delete the src completely
+finally copy the two projects into it 
+	if the project is opened with intellij you can notice there are 3 pom files are there
+	2 pom for each project you copied known as child pom
+	1 pom for main project 
+
+
+
+
+
+
+
+
+main pom :
+after name add this entries 
+ <groupId>org.example</groupId>
+  <artifactId>MyDemo</artifactId>
+  <version>1.0-SNAPSHOT</version>
+
+  <name>MyDemo</name>
+
+add 2 lines 
+ <packaging>pom</packaging>
+  <description>An Appication using microservices</description>
+
+
+before <properties> tag
+add: 
+<parent>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <version>2.5.0</version>
+    <relativePath/> <!-- lookup parent from repository -->
+  </parent>
+
+
+
+after </properties> add:-
+
+ <modules>
+    <module>UserService</module>
+    <module>customerservice</module>
+
+  </modules>
+
+now in <build></build> section add surefire plugins
+<plugins>
+    <plugin>
+      <groupId>org.apache.maven.plugins</groupId>
+      <artifactId>maven-surefire-plugin</artifactId>
+      <configuration>
+        <useSystemClassLoader>false</useSystemClassLoader>
+      </configuration>
+    </plugin>
+  </plugins>
+
+now add the following dependencies 
+
+  <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.11</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-test</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-web</artifactId>
+    </dependency>
+  <!--  <dependency>
+      <groupId>io.jsonwebtoken</groupId>
+      <artifactId>jjwt</artifactId>
+      <version>0.9.1</version>
+    </dependency> if any child using jwt then it has to be added in parent-->
+    <dependency>
+      <groupId>javax.xml.bind</groupId>
+      <artifactId>jaxb-api</artifactId>
+      <version>2.4.0-b180830.0359</version>
+    </dependency>
+=======================================
+mysql child pom
+add parent 
+<parent>
+		<groupId>org.example</groupId>
+		<artifactId>MyDemo</artifactId>
+		<version>1.0-SNAPSHOT</version>
+	</parent>
+
+add this dependencies
+		<dependencies>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>8.0.25</version>
+		</dependency>
+	</dependencies>
+
+
+===========================
+mongo child
+<parent>
+		<groupId>org.example</groupId>
+		<artifactId>MyDemo</artifactId>
+		<version>1.0-SNAPSHOT</version>
+	</parent>
+
+dependecies to be added
+<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-mongodb</artifactId>
+		</dependency>
+
+	</dependencies>
+
+
+==================================================
+
+docker compose: 
+
